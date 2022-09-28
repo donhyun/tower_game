@@ -174,3 +174,6 @@ export const drawYellowString = (engine, option) => {
   ctx.fillText(string, x, y)
   ctx.restore()
 }
+
+
+

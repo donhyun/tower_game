@@ -13,6 +13,7 @@ export const endAnimate = (engine) => {
   const gameStartNow = engine.getVariable(constant.gameStartNow)
   if (!gameStartNow) return
   const successCount = engine.getVariable(constant.successCount, 0)
+  const debug = engine.getVariable(constant.debug, 0)
   const failedCount = engine.getVariable(constant.failedCount)
   const gameScore = engine.getVariable(constant.gameScore, 0)
   const threeFiguresOffset = Number(successCount) > 99 ? engine.width * 0.1 : 0
@@ -33,6 +34,17 @@ export const endAnimate = (engine) => {
     y: engine.width * 0.2,
     textAlign: 'right'
   })
+
+  drawYellowString(engine, {
+    string: debug,
+    size: engine.width * 0.05,
+    x: (engine.width * 0.30) + threeFiguresOffset,
+    y: engine.width * 0.2,
+    textAlign: 'left'
+  })
+
+
+
   const score = engine.getImg('score')
   const scoreWidth = score.width
   const scoreHeight = score.height

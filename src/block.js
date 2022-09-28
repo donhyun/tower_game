@@ -205,19 +205,64 @@ export const blockAction = (instance, engine, time) => {
 
 const drawSwingBlock = (instance, engine) => {
   const bl = engine.getImg('blockRope')
+  const name = instance.name
+  const number = name.substr(name.indexOf("_")+1)
+  const num = number % engine.mixedpeeps.length
+  const pic = engine.getImg('peep'+num)
   engine.ctx.drawImage(
     bl, instance.weightX - instance.calWidth
     , instance.weightY
     , instance.width, instance.height * 1.3
   )
+
+  engine.ctx.drawImage(
+    pic, instance.weightX - instance.calWidth + instance.width*.15
+    , instance.weightY+ instance.height*.35
+    , instance.width*.7, instance.height * .7
+  )
+
+  drawName(engine, {
+    string: engine.mixedpeeps[num],
+    size: instance.width*.17,
+    x: instance.weightX - instance.calWidth + instance.width/2,
+    y: instance.weightY + instance.height*1.3*.98,
+    textAlign: 'center',
+    fontName: 'Arial',
+    fontWeight: 'bold'
+  })
+
   const leftX = instance.weightX - instance.calWidth
   engine.debugLineY(leftX)
+  
 }
 
 const drawBlock = (instance, engine) => {
   const { perfect } = instance
+  const name = instance.name
+  const number = name.substr(name.indexOf("_")+1)
+  const num = number % engine.mixedpeeps.length
+  //const bl = engine.getImg(perfect ? 'block-perfect' : 'block' + num)
   const bl = engine.getImg(perfect ? 'block-perfect' : 'block')
+  const pic = engine.getImg('peep'+num)
+  engine.setVariable(constant.debug, num)
   engine.ctx.drawImage(bl, instance.x, instance.y, instance.width, instance.height)
+  
+  engine.ctx.drawImage(
+    pic, instance.x  + instance.width*.15
+    , instance.y+ instance.height*.05
+    , instance.width*.7, instance.height * .7
+  )
+
+
+  drawName(engine, {
+    string: engine.mixedpeeps[num],
+    size: instance.width*.17 ,
+    x: instance.x + instance.width/2,
+    y: instance.y + instance.height*.98,
+    textAlign: 'center',
+    fontName: 'Arial',
+    fontWeight: 'bold'
+  })
 }
 
 const drawRotatedBlock = (instance, engine) => {
@@ -232,6 +277,8 @@ const drawRotatedBlock = (instance, engine) => {
 
 export const blockPainter = (instance, engine) => {
   const { status } = instance
+ 
+
   switch (status) {
     case constant.swing:
       drawSwingBlock(instance, engine)
@@ -247,4 +294,31 @@ export const blockPainter = (instance, engine) => {
     default:
       break
   }
+}
+
+export const drawName = (engine, option) => {
+  const {
+    string, size, x, y, textAlign, fontName = 'wenxue', fontWeight = 'normal'
+  } = option
+  const { ctx } = engine
+  const fontSize = size
+  const lineSize = fontSize * 0.1
+  ctx.save()
+  ctx.beginPath()
+  const gradient = ctx.createLinearGradient(0, 0, 0, y)
+  gradient.addColorStop(0, '#FFFFFF')
+  gradient.addColorStop(1, '#FFEEAA')
+  /*
+  gradient.addColorStop(0, '#FAD961')
+  gradient.addColorStop(1, '#F76B1C')
+  */
+  ctx.fillStyle = gradient
+  ctx.lineWidth = lineSize
+  //ctx.strokeStyle = '#FFF'
+  ctx.strokeStyle = '#000'
+  ctx.textAlign = textAlign || 'center'
+  ctx.font = `${fontWeight} ${fontSize}px ${fontName}`
+  ctx.strokeText(string, x, y)
+  ctx.fillText(string, x, y)
+  ctx.restore()
 }

@@ -1,0 +1,2 @@
+FOR /L %%y IN (0, 1, 3) DO copy peep.png peep%%y.png
+PAUSE
