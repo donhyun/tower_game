@@ -253,7 +253,6 @@ const drawBlock = (instance, engine) => {
     , instance.width*.7, instance.height * .7
   )
 
-
   drawName(engine, {
     string: engine.mixedpeeps[num],
     size: instance.width*.17 ,
